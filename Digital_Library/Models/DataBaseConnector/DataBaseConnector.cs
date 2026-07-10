@@ -13,6 +13,8 @@ public class DataBaseConnector : DbContext
     public DbSet<PublicationAuthor> PublicationAuthors { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+
+
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -26,6 +28,10 @@ public class DataBaseConnector : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<PublicationAuthor>().HasKey(pu => new { pu.PublicationId, pu.AuthorId });
+        modelBuilder.Entity<Publication>()
+            .HasOne(p => p.Publisher)
+            .WithMany(pub => pub.Publications)
+            .HasForeignKey(p => p.PublisherId);
 
         base.OnModelCreating(modelBuilder);
     }
