@@ -5,8 +5,57 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Digital_Library"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Виртуальная библиотека" Height="268" Width="575" FontFamily="Sitka Text" Background="#FF720024" FontSize="18" Icon="/Icons/library_icon.ico">
+    <Grid Margin="0,0,0,10">
+        <Label Content="Пользователь" HorizontalAlignment="Left" Margin="50,33,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="161" FontFamily="Sitka Text" FontSize="20" Foreground="#FFF9F9F9" Height="40">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.393"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label Content="Пароль" HorizontalAlignment="Left" Margin="346,33,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="85" FontFamily="Sitka Text" FontSize="20" Foreground="#FFF9F9F9" Height="40">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.393"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <PasswordBox x:Name="Input_Password" 
+             HorizontalAlignment="Left" 
+             Margin="347,94,0,0" 
+             VerticalAlignment="Top" 
+             Width="154" 
+             Height="33" 
+             FontSize="18" 
+             PasswordChar="*"/>
+        <ComboBox x:Name="Person_Choice" HorizontalAlignment="Left" VerticalAlignment="Top" Width="195" RenderTransformOrigin="0.471,2.229" Height="33" FontWeight="Bold" FontSize="18" Margin="50,94,0,0">
+            <ComboBox.Background>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Color="#FFF9F9F9"/>
+                    <GradientStop Color="#FFF9F9F9" Offset="1"/>
+                </LinearGradientBrush>
+            </ComboBox.Background>
+            <ComboBoxItem Content="Преподаватель"/>
+            <ComboBoxItem Content="Студент"/>
+        </ComboBox>
+        <Button x:Name="Login" Content="Войти" Click="Login_Click"
+        HorizontalAlignment="Left" 
+        VerticalAlignment="Top" 
+        Width="150" 
+        Background="#FFF9F9F9" Foreground="Black"
+        FontWeight="Bold" RenderTransformOrigin="0.533,0.156" Height="46" Margin="347,163,0,0" FontSize="18"/>
+
+        <Button x:Name="Exit" Content="Выход" Click="Exit_Click" HorizontalAlignment="Left" Margin="50,163,0,0" VerticalAlignment="Top" Height="47" Width="82" Background="White" RenderTransformOrigin="0.4,0.466" FontSize="18" FontWeight="Bold"/>
+        <Button x:Name="Info" Click="Info_Click" HorizontalAlignment="Left" Margin="184,163,0,0" VerticalAlignment="Top" Height="47" Width="61" Background="White">
+            <Image Source="/Icons/info.png" RenderTransformOrigin="0.473,-0.217" />
+        </Button>
 
     </Grid>
 </Window>
