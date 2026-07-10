@@ -12,4 +12,5 @@ public class Publisher
     public int PublisherId { get; set; }
     [Column("name")]
     public string Name { get; set; } = null!;
+    public virtual ICollection<Publication> Publications { get; set; } = new List<Publication>();
 }

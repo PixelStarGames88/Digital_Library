@@ -14,4 +14,5 @@ public class Author
     public string FirstName { get; set; } = null!;
     [Column("last_name")]
     public string LastName { get; set; } = null!;
+    public virtual ICollection<PublicationAuthor> PublicationAuthors { get; set; } = new List<PublicationAuthor>();
 }

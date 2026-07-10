@@ -10,4 +10,10 @@ public class PublicationAuthor
     public int PublicationId { get; set; }
     [Column("author_id")]
     public int AuthorId { get; set; }
+
+    [ForeignKey("PublicationId")]
+    public virtual Publication Publication { get; set; } = null!;
+
+    [ForeignKey("AuthorId")]
+    public virtual Author Author { get; set; } = null!;
 }
