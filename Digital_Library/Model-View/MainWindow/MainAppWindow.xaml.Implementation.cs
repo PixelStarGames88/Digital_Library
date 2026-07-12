@@ -7,21 +7,31 @@ namespace Digital_Library;
 
 public partial class MainAppWindow : Window
 {
+    private void InitializeTabsComponent(Dictionary<string, string> permissions)
+    {
+        TabItem overviewTab = new TabItem { Header = "Обзор" };
+        overviewTab.Content = CreateOverviewTab();
+        MainTabs.Items.Add(overviewTab);
+
+        foreach (var table in permissions.Keys)
+        {
+            TabItem tab = new TabItem { Header = table };
+            tab.Content = CreateTabContent(table, permissions[table]);
+            MainTabs.Items.Add(tab);
+        }
+    }
     private bool UserHasPermission(string tableName, char requiredPermission)
     {
         if (!_permissions.ContainsKey(tableName)) return false;
 
         return _permissions[tableName].Contains(requiredPermission.ToString());
     }
-
-
     private void RefreshData(DataGrid dg, string tableName)
     {
         if (tableName == "publication") dg.ItemsSource = _db.Publications.ToList();
         else if (tableName == "author") dg.ItemsSource = _db.Authors.ToList();
         else if (tableName == "publisher") dg.ItemsSource = _db.Publishers.ToList();
     }
-
     private void PerformSearch(string searchText)
     {
         var tab = MainTabs.SelectedItem as TabItem;

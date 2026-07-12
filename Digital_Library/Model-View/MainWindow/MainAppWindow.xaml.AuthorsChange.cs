@@ -71,7 +71,6 @@ public partial class MainAppWindow : Window
                 AddingNewAuthors(author, viewModel);
         }
         _db.SaveChanges();
-        RefreshAllTabs();
     }
     private void AddingNewAuthors(string author, PublicationViewModel viewModel)
     {

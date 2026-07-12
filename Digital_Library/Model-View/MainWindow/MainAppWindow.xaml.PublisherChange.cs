@@ -23,8 +23,7 @@ public partial class MainAppWindow : Window
 
             AddingNewPublishers(viewModel);
         }
-        _db.SaveChanges();
-        RefreshAllTabs();
+        
     }
     private void AddingNewPublishers(PublicationViewModel viewModel)
     {
@@ -37,11 +36,11 @@ public partial class MainAppWindow : Window
         {
             _db.Publishers.Add(new Publisher {  Name = publisher });
             _db.SaveChanges();
-            publisherId = _db.Publications.Where(s => s.Title == viewModel.Title && s.PublicationYear == viewModel.PublicationYear).Select(s => s.PublicationId).FirstOrDefault();
+            publisherId = _db.Publications.Where(s => s.Title == viewModel.Title && s.PublicationYear == viewModel.PublicationYear).Select(s => s.PublisherId).FirstOrDefault();
         }
 
         Publication publication = _db.Publications.Where(p => p.PublicationId == publicationId).FirstOrDefault() ?? throw new NullReferenceException();
         publication.PublisherId = publisherId;
-
+        _db.SaveChanges();
     }
 }

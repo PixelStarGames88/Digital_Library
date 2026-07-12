@@ -24,7 +24,7 @@ public partial class MainAppWindow : Window
             {
                 AuthorException(dg);
                 PublisherChange(dg);
-                dg = AddOverviewTab();
+                RefreshAllTabs();
                 MessageBox.Show("Изменения сохранены.");
             }
             catch
@@ -73,6 +73,7 @@ public partial class MainAppWindow : Window
                 {
                     _db.SaveChanges();
                     CreateTabContent(tableName, p);
+                    RefreshAllTabs();
                     MessageBox.Show("Изменения сохранены.");
                 }
                 catch
@@ -88,7 +89,7 @@ public partial class MainAppWindow : Window
                 {
                     _db.Remove(dg.SelectedItem);
                     _db.SaveChanges();
-                    RefreshData(dg, tableName);
+                    RefreshAllTabs();
                 }
             });
 
@@ -96,9 +97,7 @@ public partial class MainAppWindow : Window
         panel.Children.Add(btnPanel);
         
         panel.Children.Add(dg);
-        
         RefreshData(dg, tableName);
-        
         return panel;
     }
     private DataGrid AddAuthorTab(string p)

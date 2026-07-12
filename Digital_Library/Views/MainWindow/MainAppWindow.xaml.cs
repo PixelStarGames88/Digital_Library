@@ -23,16 +23,6 @@ public partial class MainAppWindow : Window
     {
         InitializeComponent();
         _permissions = permissions;
-
-        TabItem overviewTab = new TabItem { Header = "Обзор" };
-        overviewTab.Content = CreateOverviewTab();
-        MainTabs.Items.Add(overviewTab);
-
-        foreach (var table in permissions.Keys)
-        {
-            TabItem tab = new TabItem { Header = table };
-            tab.Content = CreateTabContent(table, permissions[table]);
-            MainTabs.Items.Add(tab);
-        }
+        InitializeTabsComponent(_permissions);
     }  
 }
