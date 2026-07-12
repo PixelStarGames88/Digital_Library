@@ -1,0 +1,33 @@
+﻿using Digital_Library.Models.DataBaseConnector;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Windows;
+using System.Windows.Controls;
+
+namespace Digital_Library;
+
+public partial class MainAppWindow : Window
+{
+    private void AddButtnonCreate(StackPanel panel)
+    {
+        Button btnAdd = new Button { Content = "Добавить", Width = 100, Margin = new Thickness(5) };
+        btnAdd.Click += (s, e) =>
+        {
+            AddWindow addWin = new AddWindow();
+            if (addWin.ShowDialog() == true) RefreshAllTabs();
+        };
+        panel.Children.Add(btnAdd);
+    }
+    private void AddButtnonDelete(StackPanel panel, RoutedEventHandler fun)
+    {
+        Button btnDel = new Button { Content = "Удалить", Margin = new Thickness(5), Width = 95 };
+        btnDel.Click += fun;
+        panel.Children.Add(btnDel);
+    }
+    private void AddButtnonUpdate(StackPanel panel, RoutedEventHandler fun)
+    {
+        Button btnSave = new Button { Content = "Сохранить", Margin = new Thickness(5), Width = 110 };
+        btnSave.Click += fun; 
+        panel.Children.Add(btnSave);
+    }
+}

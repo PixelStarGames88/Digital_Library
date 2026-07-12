@@ -8,15 +8,21 @@ public class Publication
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("publication_id")] public int PublicationId { get; set; }
+    [Column("publication_id")] 
+    public int PublicationId { get; set; }
 
-    [Column("title")] public string Title { get; set; } = null!;
-    [Column("publication_year")] public int? PublicationYear { get; set; }
-    [Column("isbn")] public string? Isbn { get; set; }
+    [Column("title")] 
+    public string Title { get; set; } = null!;
+    [Column("publication_year")] 
+    public int? PublicationYear { get; set; }
+    [Column("isbn")] 
+    public string? Isbn { get; set; }
     
-    [Column("publisher_id")] public int PublisherId { get; set; }
+    [Column("publisher_id")] 
+    public int PublisherId { get; set; }
 
-    [ForeignKey("PublisherId")] public virtual Publisher? Publisher { get; set; }
+    [ForeignKey("PublisherId")] 
+    public virtual Publisher? Publisher { get; set; }
 
     public virtual ICollection<PublicationAuthor> PublicationAuthors { get; set; } = new List<PublicationAuthor>();
 }

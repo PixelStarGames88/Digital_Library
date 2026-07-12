@@ -2,10 +2,10 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="AddWindow.xaml.cs">
+    <Compile Update="Views\CreateWindow\AddWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="MainAppWindow.xaml.cs">
+    <Compile Update="Views\MainWindow\MainAppWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
