@@ -20,6 +20,13 @@ public class Publication
     
     [Column("publisher_id")] 
     public int PublisherId { get; set; }
+    [Column("keywords")]
+    public string? Keywords { get; set; }
+    [Column("annotation")]
+    public string? Annotation { get; set; }
+
+    [Column("page_count")]
+    public int PageCount { get; set; }
 
     [ForeignKey("PublisherId")] 
     public virtual Publisher? Publisher { get; set; }

@@ -21,6 +21,7 @@ public partial class MainAppWindow : Window
 
             if (viewModel == null) return;
 
+
             AddingNewPublishers(viewModel);
         }
         
@@ -36,7 +37,7 @@ public partial class MainAppWindow : Window
         {
             _db.Publishers.Add(new Publisher {  Name = publisher });
             _db.SaveChanges();
-            publisherId = _db.Publications.Where(s => s.Title == viewModel.Title && s.PublicationYear == viewModel.PublicationYear).Select(s => s.PublisherId).FirstOrDefault();
+            publisherId = _db.Publishers.Where(s => s.Name == viewModel.PublisherName).Select(s => s.PublisherId).FirstOrDefault();
         }
 
         Publication publication = _db.Publications.Where(p => p.PublicationId == publicationId).FirstOrDefault() ?? throw new NullReferenceException();
