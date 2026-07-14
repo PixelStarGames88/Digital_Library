@@ -15,8 +15,6 @@ public class Publication
     public string Title { get; set; } = null!;
     [Column("publication_year")] 
     public int? PublicationYear { get; set; }
-    [Column("isbn")] 
-    public string? Isbn { get; set; }
     
     [Column("publisher_id")] 
     public int PublisherId { get; set; }
