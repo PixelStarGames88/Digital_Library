@@ -30,4 +30,31 @@ public partial class MainAppWindow : Window
         btnSave.Click += fun; 
         panel.Children.Add(btnSave);
     }
+
+    private void AddButtonDetails(StackPanel panel, DataGrid dg)
+    {
+        Button btnDetails = new Button { Content = "Подробнее", Margin = new Thickness(5), Width = 110 };
+        btnDetails.Click += (s, e) =>
+        {
+            var selectedItem = dg.SelectedItem;
+            if (selectedItem != null)
+            {
+                string publisherName = (selectedItem as dynamic).Name;
+
+                if (_publisherDescriptions.TryGetValue(publisherName, out string desc))
+                {
+                    MessageBox.Show(desc, publisherName);
+                }
+                else
+                {
+                    MessageBox.Show("Описание для данного издательства пока отсутствует.", publisherName);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Сначала выберите издательство в таблице.");
+            }
+        };
+        panel.Children.Add(btnDetails);
+    }
 }

@@ -60,7 +60,6 @@ public partial class MainAppWindow : Window
         }
     }
 
-    private void Find_Click(object sender, RoutedEventArgs e) => PerformSearch(SearchBox.Text);
 
     private void BtnLogout_Click(object sender, RoutedEventArgs e)
     {
@@ -73,11 +72,17 @@ public partial class MainAppWindow : Window
         this.Close();
     }
 
-    private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+    private void BtnSaveResult_Click(object sender, RoutedEventArgs e)
     {
-        PerformSearch(SearchBox.Text);
+        // Логика экспорта отфильтрованных данных 
     }
-    
+
+    // Универсальный метод для всех элементов поиска/фильтрации
+    private void Filter_Changed(object sender, System.EventArgs e)
+    {
+        // Универсальный метод для всех элементов поиска/фильтрации
+    }
+
     private void RefreshAllTabs()
     {
         foreach (var item in MainTabs.Items)

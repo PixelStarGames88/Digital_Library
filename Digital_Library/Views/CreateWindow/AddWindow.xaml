@@ -1,23 +1,34 @@
 ﻿<Window x:Class="Digital_Library.AddWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Новая публикация" Height="540" Width="350" Background="#FF720024" WindowStartupLocation="CenterScreen">
+        Title="Новая публикация" Height="624" Width="350" Background="#FF720024" WindowStartupLocation="CenterScreen">
 
     <StackPanel Margin="20">
         <TextBlock Text="Название" Foreground="White" HorizontalAlignment="Center" FontFamily="Sitka Text" FontSize="16" Height="26"/>
         <TextBox x:Name="txtTitle" Height="30" Margin="0,0,0,10" Width="310"/>
 
-        <TextBlock Text="Год" Foreground="White" HorizontalAlignment="Center" FontFamily="Sitka Text" FontSize="16" Height="24"/>
-        <TextBox x:Name="txtYear" Height="30" Margin="0,0,0,10" Width="116"/>
-        
-        <TextBlock Text="ISBN (необязательно)" Foreground="White" HorizontalAlignment="Center" FontFamily="Sitka Text" FontSize="16" Height="25"/>
-        <TextBox x:Name="txtIsbn" Height="30" Margin="0,0,0,10"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+            <StackPanel Margin="0,0,40,0">
+                <TextBlock Text="Год" Foreground="White" HorizontalAlignment="Center" FontFamily="Sitka Text" FontSize="16"/>
+                <TextBox x:Name="txtYear" Height="30" Width="101"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Страницы" Foreground="White" HorizontalAlignment="Center" FontFamily="Sitka Text" FontSize="16"/>
+                <TextBox x:Name="txtPages" Height="30" Width="101"/>
+            </StackPanel>
+        </StackPanel>
 
         <TextBlock Text="Издательство" Foreground="White" HorizontalAlignment="Center" FontFamily="Sitka Text" FontSize="16" Height="23" Width="108"/>
         <TextBox x:Name="txtPublisher" Height="30" Margin="0,0,0,10" Width="309"/>
 
+        <TextBlock Text="Аннотоция" Foreground="White" HorizontalAlignment="Center" FontFamily="Sitka Text" FontSize="16" Height="23" Width="91"/>
+        <TextBox x:Name="txtAnnotation" Height="79" Margin="0,0,0,10" Width="310"/>
+
+        <TextBlock Text="Ключевые слова" Foreground="White" HorizontalAlignment="Center" FontFamily="Sitka Text" FontSize="16" Height="23" Width="133"/>
+        <TextBox x:Name="txtKeyWords" Height="53" Margin="0,0,0,10" Width="310"/>
+
         <TextBlock Text="Авторы" Foreground="White" HorizontalAlignment="Center" FontFamily="Sitka Text" FontSize="16" Height="25"/>
-        <DataGrid x:Name="dgAuthors" Height="142" AutoGenerateColumns="False" CanUserAddRows="True" Width="308" FontFamily="Sitka Text" FontSize="14" FontWeight="Bold">
+        <DataGrid x:Name="dgAuthors" Height="99" AutoGenerateColumns="False" CanUserAddRows="True" Width="308" FontFamily="Sitka Text" FontSize="14" FontWeight="Bold">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Инициалы" Binding="{Binding FirstName}" Width="100"/>
                 <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}" Width="*"/>

@@ -11,16 +11,18 @@ public partial class MainAppWindow : Window
     private List<PublicationViewModel> LoadOverviewData()
     {
         return _db.Publications
-            .Include(p => p.Publisher)
-            .Include(p => p.PublicationAuthors).ThenInclude(pa => pa.Author)
-            .Select(p => new PublicationViewModel
-            {
-                Title = p.Title,
-                Authors = string.Join(", ", p.PublicationAuthors.Select(pa => pa.Author.FirstName + " " + pa.Author.LastName)),
-                PublisherName = p.Publisher != null ? p.Publisher.Name : "Нет издателя",
-                ISBN = p.Isbn ?? "",
-                PublicationYear = p.PublicationYear
-            }).ToList();
+         .Include(p => p.Publisher)
+         .Include(p => p.PublicationAuthors).ThenInclude(pa => pa.Author)
+         .Select(p => new PublicationViewModel
+         {
+             Title = p.Title,
+             Authors = string.Join(", ", p.PublicationAuthors.Select(pa => pa.Author.FirstName + " " + pa.Author.LastName)),
+             PublisherName = p.Publisher != null ? p.Publisher.Name : "Нет издателя",
+             PublicationYear = p.PublicationYear,
+             PageCount = p.PageCount,
+             Annotation = p.Annotation,
+             Keywords = p.Keywords
+         }).ToList();
     }
     private void AuthorException(DataGrid dg)
     {
@@ -107,7 +109,6 @@ public partial class MainAppWindow : Window
                 Title = p.Title,
                 Authors = string.Join(", ", p.PublicationAuthors.Select(pa => pa.Author.FirstName + " " + pa.Author.LastName)),
                 PublisherName = p.Publisher != null ? p.Publisher.Name : "Нет издателя",
-                ISBN = p.Isbn ?? "",
                 PublicationYear = p.PublicationYear
             }).FirstOrDefault() ?? throw new NullReferenceException();
         return viewModel;

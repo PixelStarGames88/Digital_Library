@@ -8,6 +8,7 @@ namespace Digital_Library;
 
 public partial class MainAppWindow : Window
 {
+
     private FrameworkElement CreateOverviewTab()
     {
         DockPanel panel = new DockPanel();
@@ -40,9 +41,11 @@ public partial class MainAppWindow : Window
         DataGrid dg = new DataGrid { IsReadOnly = !UserHasPermission("publication", 'U'), AutoGenerateColumns = false };
 
         dg.Columns.Add(new DataGridTextColumn { Header = "Название", Binding = new System.Windows.Data.Binding("Title"), Width = new DataGridLength(2, DataGridLengthUnitType.Star), IsReadOnly = true});
-        dg.Columns.Add(new DataGridTextColumn { Header = "Авторы", Binding = new System.Windows.Data.Binding("Authors"), Width = new DataGridLength(1.5, DataGridLengthUnitType.Star) });
+        dg.Columns.Add(new DataGridTextColumn { Header = "Автор", Binding = new System.Windows.Data.Binding("Authors"), Width = new DataGridLength(1.5, DataGridLengthUnitType.Star) });
         dg.Columns.Add(new DataGridTextColumn { Header = "Издательство", Binding = new System.Windows.Data.Binding("PublisherName"), Width = DataGridLength.Auto});
-        dg.Columns.Add(new DataGridTextColumn { Header = "ISBN", Binding = new System.Windows.Data.Binding("Isbn"), Width = DataGridLength.Auto, IsReadOnly = true });
+        dg.Columns.Add(new DataGridTextColumn { Header = "Ключевые слова", Binding = new System.Windows.Data.Binding("Keywords"), Width = DataGridLength.Auto, IsReadOnly = true });
+        dg.Columns.Add(new DataGridTextColumn { Header = "Аннотация", Binding = new System.Windows.Data.Binding("Annotation"), Width = DataGridLength.Auto, IsReadOnly = true });
+        dg.Columns.Add(new DataGridTextColumn { Header = "Количество страниц", Binding = new System.Windows.Data.Binding("PageCount"), Width = DataGridLength.Auto, IsReadOnly = true });
         dg.Columns.Add(new DataGridTextColumn { Header = "Год", Binding = new System.Windows.Data.Binding("PublicationYear"), Width = DataGridLength.Auto, IsReadOnly = true });
 
         dg.ItemsSource = LoadOverviewData();
@@ -60,7 +63,10 @@ public partial class MainAppWindow : Window
         if (tableName == "author")
             dg = AddAuthorTab(p);
         else if (tableName == "publisher")
+        {
             dg = AddPublisherTab(p);
+            AddButtonDetails(btnPanel, dg);
+        }
         else if (tableName == "publication")
             dg = AddPublicationTab(p);
         else
@@ -72,7 +78,6 @@ public partial class MainAppWindow : Window
                 try
                 {
                     _db.SaveChanges();
-                    CreateTabContent(tableName, p);
                     RefreshAllTabs();
                     MessageBox.Show("Изменения сохранены.");
                 }
@@ -128,8 +133,11 @@ public partial class MainAppWindow : Window
         dg.CellEditEnding += EditEnding;
 
         dg.Columns.Add(new DataGridTextColumn { Header = "Название", Binding = new System.Windows.Data.Binding("Title") });
-        dg.Columns.Add(new DataGridTextColumn { Header = "Год", Binding = new System.Windows.Data.Binding("PublicationYear") });
-        dg.Columns.Add(new DataGridTextColumn { Header = "ISBN", Binding = new System.Windows.Data.Binding("Isbn") });
+        dg.Columns.Add(new DataGridTextColumn { Header = "Год", Binding = new System.Windows.Data.Binding("PublicationYear") }); 
+        dg.Columns.Add(new DataGridTextColumn { Header = "Ключевые слова", Binding = new System.Windows.Data.Binding("Keywords")});
+        dg.Columns.Add(new DataGridTextColumn { Header = "Аннотация", Binding = new System.Windows.Data.Binding("Annotation")});
+        dg.Columns.Add(new DataGridTextColumn { Header = "Количество страниц", Binding = new System.Windows.Data.Binding("PageCount")});
+
 
         return dg;
     }
@@ -145,14 +153,19 @@ public partial class MainAppWindow : Window
             if (!int.TryParse(editedValue, out int y) || y < 0 || y > 2026)
                 isInvalid = true;
         }
-        else if (editedColumn == "ISBN")
+        else if (editedColumn == "Количество страниц")
         {
-            if (!string.IsNullOrEmpty(editedValue) && !editedValue.All(c => char.IsDigit(c) || c == '-'))
+            if (!int.TryParse(editedValue, out int p) || p <= 0)
+                isInvalid = true;
+        }
+        else if (editedColumn == "Ключевые слова" || editedColumn == "Аннотация")
+        {
+            if (string.IsNullOrWhiteSpace(editedValue))
                 isInvalid = true;
         }
         else if (editedColumn == "Фамилия" || editedColumn == "Инициалы" || editedColumn == "Издательство")
         {
-            if (editedValue!.Any(char.IsDigit))
+            if (string.IsNullOrEmpty(editedValue) || editedValue.Any(char.IsDigit))
                 isInvalid = true;
         }
         if (isInvalid)

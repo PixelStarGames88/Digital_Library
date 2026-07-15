@@ -9,20 +9,21 @@ public partial class AddWindow : Window
 {
     private void Save_Click(object sender, RoutedEventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(txtTitle.Text) || string.IsNullOrWhiteSpace(txtYear.Text))
+        if (string.IsNullOrWhiteSpace(txtTitle.Text) || string.IsNullOrWhiteSpace(txtYear.Text) || string.IsNullOrWhiteSpace(txtPages.Text))
         {
-            MessageBox.Show("Название и год обязательны.");
+            MessageBox.Show("Название, год и количество страниц обязательны.");
             return;
         }
+
         if (!int.TryParse(txtYear.Text, out int year) || year < 0 || year > 2026)
         {
             MessageBox.Show("Введите корректный год.");
             return;
         }
 
-        if (!string.IsNullOrWhiteSpace(txtIsbn.Text) && !txtIsbn.Text.All(c => char.IsDigit(c) || c == '-'))
+        if (!int.TryParse(txtPages.Text, out int pages) || pages <= 0)
         {
-            MessageBox.Show("ISBN может содержать только цифры и дефисы.");
+            MessageBox.Show("Количество страниц должно быть положительным числом.");
             return;
         }
 
@@ -31,6 +32,7 @@ public partial class AddWindow : Window
             MessageBox.Show("Название издательства не может состоять только из цифр.");
             return;
         }
+
         if (AuthorsList.Count == 0)
         {
             MessageBox.Show("Добавьте хотя бы одного автора.");
@@ -44,28 +46,25 @@ public partial class AddWindow : Window
                 MessageBox.Show("У всех авторов должны быть заполнены инициалы и фамилия.");
                 return;
             }
-
-            if (author.LastName.Any(char.IsDigit))
-            {
-                MessageBox.Show($"Фамилия и инициалы '{author.LastName}' не должны содержать цифры.");
-                return;
-            }
         }
 
-        var publisher = _db.Publishers.FirstOrDefault(p => p.Name == txtPublisher.Text.Trim()) ?? new Publisher { Name = txtPublisher.Text.Trim() };
+        var publisher = _db.Publishers.FirstOrDefault(p => p.Name == txtPublisher.Text.Trim())
+                        ?? new Publisher { Name = txtPublisher.Text.Trim() };
 
         var newPub = new Publication
         {
             Title = txtTitle.Text,
             PublicationYear = year,
-            Isbn = txtIsbn.Text,
+            PageCount = pages,             
+            Annotation = txtAnnotation.Text, 
+            Keywords = txtKeyWords.Text,    
             Publisher = publisher
         };
 
         foreach (var authorRow in AuthorsList)
         {
-            if (string.IsNullOrWhiteSpace(authorRow.LastName)) continue;
-            var author = _db.Authors.FirstOrDefault(a => a.FirstName == authorRow.FirstName && a.LastName == authorRow.LastName) ?? authorRow;
+            var author = _db.Authors.FirstOrDefault(a => a.FirstName == authorRow.FirstName && a.LastName == authorRow.LastName)
+                         ?? authorRow;
             newPub.PublicationAuthors.Add(new PublicationAuthor { Author = author });
         }
 
