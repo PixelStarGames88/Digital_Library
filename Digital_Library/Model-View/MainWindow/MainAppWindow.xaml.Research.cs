@@ -32,6 +32,13 @@ public partial class MainAppWindow : Window
     }
     private void MainTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        if (sender is not TabControl)
+            return;
+        if (e.RemovedItems.Count == 0)
+            return;
+        if (e.AddedItems.Count == 0)
+            return;
+
         ClearFilter();
         RefreshAllTabs();
     }
@@ -45,7 +52,7 @@ public partial class MainAppWindow : Window
     }
     private void Filter_Changed()
     {
-         var tab = MainTabs.SelectedItem as TabItem;
+        var tab = MainTabs.SelectedItem as TabItem;
         var dg = (tab?.Content as DockPanel)?.Children.OfType<DataGrid>().FirstOrDefault() ?? (tab?.Content as DataGrid);
 
         if (dg == null) return;

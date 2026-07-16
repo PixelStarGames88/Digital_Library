@@ -76,7 +76,6 @@ public partial class MainAppWindow : Window
 
     private void BtnSaveResult_Click(object sender, RoutedEventArgs e)
     {
-        // 1. Получаем текущую активную вкладку
         var selectedTab = MainTabs.SelectedItem as TabItem;
         if (selectedTab == null)
         {
