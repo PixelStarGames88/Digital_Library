@@ -51,5 +51,8 @@ public partial class MainAppWindow : Window
             tab.Content = CreateTabContent(table, _permissions[table]);
             MainTabs.Items.Add(tab);
         }
+        FillComboboxes();
     }
+
+
 }

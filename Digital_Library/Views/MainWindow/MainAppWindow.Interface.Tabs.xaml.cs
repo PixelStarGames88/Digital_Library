@@ -61,16 +61,24 @@ public partial class MainAppWindow : Window
         DataGrid dg;
 
         if (tableName == "author")
+        {
             dg = AddAuthorTab(p);
+        }   
         else if (tableName == "publisher")
         {
             dg = AddPublisherTab(p);
             AddButtonDetails(btnPanel, dg);
         }
         else if (tableName == "publication")
+        {
             dg = AddPublicationTab(p);
+        }  
         else
+        {
             dg = AddOverviewTab();
+            AddButtonDetails(btnPanel, dg);
+        }
+            
 
         if (p.Contains("U"))
             AddButtnonUpdate(btnPanel, (s, e) =>

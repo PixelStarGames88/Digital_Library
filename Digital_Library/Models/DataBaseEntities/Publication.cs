@@ -19,9 +19,9 @@ public class Publication
     [Column("publisher_id")] 
     public int PublisherId { get; set; }
     [Column("keywords")]
-    public string? Keywords { get; set; }
+    public string? Keywords { get; set; } = null!;
     [Column("annotation")]
-    public string? Annotation { get; set; }
+    public string? Annotation { get; set; } = null!;
 
     [Column("page_count")]
     public int PageCount { get; set; }

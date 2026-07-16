@@ -1,7 +1,9 @@
 ﻿using Digital_Library.Models.DataBaseEntities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
+using System.IO;
 
 namespace Digital_Library;
 
@@ -28,9 +30,9 @@ public partial class MainAppWindow : Window
     }
     private void RefreshData(DataGrid dg, string tableName)
     {
-        if (tableName == "publication") dg.ItemsSource = _db.Publications.ToList();
-        else if (tableName == "author") dg.ItemsSource = _db.Authors.ToList();
-        else if (tableName == "publisher") dg.ItemsSource = _db.Publishers.ToList();
+        if (tableName == "Публикация") dg.ItemsSource = _db.Publications.ToList();
+        else if (tableName == "Автор") dg.ItemsSource = _db.Authors.ToList();
+        else if (tableName == "Издательство") dg.ItemsSource = _db.Publishers.ToList();
     }
     private void PerformSearch(string searchText)
     {
@@ -74,14 +76,88 @@ public partial class MainAppWindow : Window
 
     private void BtnSaveResult_Click(object sender, RoutedEventArgs e)
     {
-        // Логика экспорта отфильтрованных данных 
+        // 1. Получаем текущую активную вкладку
+        var selectedTab = MainTabs.SelectedItem as TabItem;
+        if (selectedTab == null)
+        {
+            MessageBox.Show("Не выбрана вкладка для сохранения.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        DataGrid dg = null!;
+        if (selectedTab.Content is DockPanel dockPanel)
+        {
+            dg = dockPanel.Children.OfType<DataGrid>().FirstOrDefault() ?? throw new NullReferenceException();
+        }
+        else if (selectedTab.Content is DataGrid directDg)
+        {
+            dg = directDg;
+        }
+
+        if (dg == null || dg.ItemsSource == null)
+        {
+            MessageBox.Show("В текущей вкладке нет данных для сохранения.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        SaveFileDialog saveFileDialog = new SaveFileDialog
+        {
+            Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
+            DefaultExt = ".txt",
+            FileName = "Результаты_библиотеки.txt",
+            Title = "Сохранить результаты"
+        };
+
+        if (saveFileDialog.ShowDialog() != true) return;
+
+
+        try
+        {
+            var lines = new List<string>();
+
+            var headers = dg.Columns.Select(c => c.Header?.ToString() ?? "").ToList();
+            lines.Add(string.Join(" | ", headers));
+            lines.Add(new string('-', 50));
+
+            foreach (var item in dg.ItemsSource)
+            {
+                if (item == null) continue;
+
+                var rowValues = new List<string>();
+                foreach (var column in dg.Columns)
+                {
+                    if (column is DataGridTextColumn textColumn && textColumn.Binding is System.Windows.Data.Binding binding)
+                    {
+                        string propertyName = binding.Path.Path;
+                        var propertyInfo = item.GetType().GetProperty(propertyName);
+
+                        string value = propertyInfo?.GetValue(item)?.ToString() ?? "";
+
+                        value = value.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Trim();
+
+                        rowValues.Add(value);
+                    }
+                    else
+                    {
+                        rowValues.Add("");
+                    }
+                    rowValues.Add("\n");
+                }
+                lines.Add(string.Join(" | ", rowValues));
+            }
+
+            File.WriteAllLines(saveFileDialog.FileName, lines, System.Text.Encoding.UTF8);
+
+            MessageBox.Show($"Данные успешно сохранены в файл:\n{saveFileDialog.FileName}",
+                            "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch
+        {
+            MessageBox.Show($"Произошла ошибка при сохранении файла!",
+                            "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
-    // Универсальный метод для всех элементов поиска/фильтрации
-    private void Filter_Changed(object sender, System.EventArgs e)
-    {
-        // Универсальный метод для всех элементов поиска/фильтрации
-    }
 
     private void RefreshAllTabs()
     {

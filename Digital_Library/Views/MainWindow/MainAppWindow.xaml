@@ -15,7 +15,7 @@
 
                 <Button Grid.Column="0" Content="Выйти" Click="BtnLogout_Click" Width="90" Height="35" Margin="10,0,10,0" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
-                    <Button Content="Сохранить результат поиска" Click="BtnSaveResult_Click" Width="295" Height="35" Margin="0,0,10,0" FontSize="18" FontWeight="Bold"/>
+                    <Button Content="Сохранить результат поиска" Click="BtnSaveResult_Click" Width="299" Height="35" Margin="0,0,10,0" FontSize="18" FontWeight="Bold"/>
                 </StackPanel>
             </Grid>
         </DockPanel>
@@ -31,11 +31,11 @@
             </StackPanel>
             <StackPanel Margin="10,5">
                 <TextBlock Text="Год:" FontSize="14" Foreground="White"/>
-                <ComboBox x:Name="FilterYears" Width="90" Height="25" HorizontalAlignment="Left"/>
+                <ComboBox x:Name="FilterYears" Width="90" Height="25" HorizontalAlignment="Left" SelectionChanged="Filter_Changed"/>
             </StackPanel>
             <StackPanel Margin="10,5">
                 <TextBlock Text="Авторы:" FontSize="14" Foreground="White"/>
-                <ComboBox x:Name="FilterAuthors" Width="160" Height="25" HorizontalAlignment="Left"/>
+                <ComboBox x:Name="FilterAuthors" Width="160" Height="25" HorizontalAlignment="Left" SelectionChanged="Filter_Changed"/>
             </StackPanel>
             <StackPanel Margin="10,5">
                 <TextBlock Text="Количество страниц:" FontSize="14" Foreground="White"/>
@@ -43,7 +43,7 @@
             </StackPanel>
         </StackPanel>
 
-        <TabControl x:Name="MainTabs" Margin="10"/>
+        <TabControl x:Name="MainTabs" Margin="10" SelectionChanged="MainTabs_SelectionChanged"/>
 
     </DockPanel>
 </Window>
