@@ -31,30 +31,33 @@ public partial class MainAppWindow : Window
         panel.Children.Add(btnSave);
     }
 
-    private void AddButtonDetails(StackPanel panel, DataGrid dg)
+    private void AddButtonDetails(StackPanel panel, DataGrid dg, string tabName)
     {
         Button btnDetails = new Button { Content = "Подробнее", Margin = new Thickness(5), Width = 110 };
+
         btnDetails.Click += (s, e) =>
         {
             var selectedItem = dg.SelectedItem;
-            if (selectedItem != null)
+            if (selectedItem == null)
+            {
+                MessageBox.Show("Сначала выберите запись в таблице.");
+                return;
+            }
+            if (tabName == "Издательство")
             {
                 string publisherName = (selectedItem as dynamic).Name;
-
                 if (_publisherDescriptions.TryGetValue(publisherName, out string desc))
-                {
                     MessageBox.Show(desc, publisherName);
-                }
                 else
-                {
                     MessageBox.Show("Описание для данного издательства пока отсутствует.", publisherName);
-                }
             }
-            else
+
+            else if (tabName == "Обзор")
             {
-                MessageBox.Show("Сначала выберите издательство в таблице.");
+                // Вывод более подробной информации о публикации
             }
         };
+
         panel.Children.Add(btnDetails);
     }
 }

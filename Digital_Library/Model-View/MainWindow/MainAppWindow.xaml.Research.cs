@@ -50,7 +50,7 @@ public partial class MainAppWindow : Window
         NameSearchBox.Clear();
         WordsSearchBox.Clear();
     }
-    private void Filter_Changed()
+    private void Filter_Changed() 
     {
         var tab = MainTabs.SelectedItem as TabItem;
         var dg = (tab?.Content as DockPanel)?.Children.OfType<DataGrid>().FirstOrDefault() ?? (tab?.Content as DataGrid);
@@ -67,19 +67,25 @@ public partial class MainAppWindow : Window
 
         if (header == "Обзор")
         {
-            dg.ItemsSource = LoadOverviewData().Where(x => x.Authors.Contains(filterAuthor) &&
-            (x.Annotation.Contains(wordsFilter) || x.Keywords.Contains(wordsFilter)) &&
-            x.Title.Contains(nameFilter) && x.PublicationYear.ToString()!.Contains(filterYear)
-            && x.PageCount.ToString().Contains(filterPageCount)).ToList();
+            dg.ItemsSource = LoadOverviewData().Where(x =>
+                x.Authors.Contains(filterAuthor) &&
+                (x.Annotation.Contains(wordsFilter) || x.Keywords.Contains(wordsFilter)) &&
+                (x.Title.Contains(nameFilter) || x.PublisherName.Contains(nameFilter)) &&
+                x.PublicationYear.ToString()!.Contains(filterYear) &&
+                x.PageCount.ToString().Contains(filterPageCount)).ToList();
         }
         else
         {
             dg.ItemsSource = header switch
             {
                 "Автор" => _db.Authors.Where(x => (x.FirstName + " " + x.LastName).Contains(filterAuthor)).ToList(),
-                "Публикация" => _db.Publications.Where(x => ((x.Annotation!.Contains(wordsFilter) || x.Keywords!.Contains(wordsFilter)) &&
-                                                x.Title.Contains(nameFilter) && x.PageCount.ToString().Contains(filterPageCount)) &&
-                                                x.PublicationYear.ToString()!.Contains(filterYear)).ToList(),
+
+                "Публикация" => _db.Publications.Where(x =>
+                    (x.Annotation!.Contains(wordsFilter) || x.Keywords!.Contains(wordsFilter)) &
+                    (x.Title.Contains(nameFilter) || x.Publisher.Name.Contains(nameFilter)) &&
+                    x.PageCount.ToString().Contains(filterPageCount) &&
+                    x.PublicationYear.ToString()!.Contains(filterYear)).ToList(),
+
                 _ => dg.ItemsSource
             };
         }

@@ -13,11 +13,14 @@ public partial class MainAppWindow : Window
     {
         DockPanel panel = new DockPanel();
         StackPanel btnPanel = new StackPanel { Orientation = Orientation.Horizontal, Height = 40 };
-        DataGrid dg = AddOverviewTab();
+        DataGrid dg = AddOverviewTab(); 
 
         DockPanel.SetDock(btnPanel, Dock.Top);
         panel.Children.Add(btnPanel);
         panel.Children.Add(dg);
+
+        AddButtonDetails(btnPanel, dg, "Обзор");
+
         if (UserHasPermission("publication", 'C')) AddButtnonCreate(btnPanel);
         if (UserHasPermission("publication", 'U')) AddButtnonUpdate(btnPanel, (s, e) =>
         {
@@ -36,6 +39,7 @@ public partial class MainAppWindow : Window
 
         return panel;
     }
+
     private DataGrid AddOverviewTab()
     {
         DataGrid dg = new DataGrid { IsReadOnly = !UserHasPermission("publication", 'U'), AutoGenerateColumns = false };
@@ -43,9 +47,6 @@ public partial class MainAppWindow : Window
         dg.Columns.Add(new DataGridTextColumn { Header = "Название", Binding = new System.Windows.Data.Binding("Title"), Width = new DataGridLength(2, DataGridLengthUnitType.Star), IsReadOnly = true});
         dg.Columns.Add(new DataGridTextColumn { Header = "Автор", Binding = new System.Windows.Data.Binding("Authors"), Width = new DataGridLength(1.5, DataGridLengthUnitType.Star) });
         dg.Columns.Add(new DataGridTextColumn { Header = "Издательство", Binding = new System.Windows.Data.Binding("PublisherName"), Width = DataGridLength.Auto});
-        dg.Columns.Add(new DataGridTextColumn { Header = "Ключевые слова", Binding = new System.Windows.Data.Binding("Keywords"), Width = DataGridLength.Auto, IsReadOnly = true });
-        dg.Columns.Add(new DataGridTextColumn { Header = "Аннотация", Binding = new System.Windows.Data.Binding("Annotation"), Width = DataGridLength.Auto, IsReadOnly = true });
-        dg.Columns.Add(new DataGridTextColumn { Header = "Количество страниц", Binding = new System.Windows.Data.Binding("PageCount"), Width = DataGridLength.Auto, IsReadOnly = true });
         dg.Columns.Add(new DataGridTextColumn { Header = "Год", Binding = new System.Windows.Data.Binding("PublicationYear"), Width = DataGridLength.Auto, IsReadOnly = true });
 
         dg.ItemsSource = LoadOverviewData();
@@ -67,7 +68,7 @@ public partial class MainAppWindow : Window
         else if (tableName == "publisher")
         {
             dg = AddPublisherTab(p);
-            AddButtonDetails(btnPanel, dg);
+            AddButtonDetails(btnPanel, dg, "Издательство");
         }
         else if (tableName == "publication")
         {
@@ -76,7 +77,7 @@ public partial class MainAppWindow : Window
         else
         {
             dg = AddOverviewTab();
-            AddButtonDetails(btnPanel, dg);
+            AddButtonDetails(btnPanel, dg, "Обзор");
         }
             
 
@@ -140,7 +141,7 @@ public partial class MainAppWindow : Window
 
         dg.CellEditEnding += EditEnding;
 
-        dg.Columns.Add(new DataGridTextColumn { Header = "Название", Binding = new System.Windows.Data.Binding("Title") });
+        dg.Columns.Add(new DataGridTextColumn { Header = "Название", Binding = new System.Windows.Data.Binding("Title"), Width = new DataGridLength(2, DataGridLengthUnitType.Star) });
         dg.Columns.Add(new DataGridTextColumn { Header = "Год", Binding = new System.Windows.Data.Binding("PublicationYear") }); 
         dg.Columns.Add(new DataGridTextColumn { Header = "Ключевые слова", Binding = new System.Windows.Data.Binding("Keywords")});
         dg.Columns.Add(new DataGridTextColumn { Header = "Аннотация", Binding = new System.Windows.Data.Binding("Annotation")});
