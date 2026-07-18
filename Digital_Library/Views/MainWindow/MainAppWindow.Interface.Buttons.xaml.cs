@@ -54,7 +54,15 @@ public partial class MainAppWindow : Window
 
             else if (tabName == "Обзор")
             {
-                // Вывод более подробной информации о публикации
+                string description = 
+                "Название: " + (selectedItem as dynamic).Title + 
+                "\nАвторы: " + (selectedItem as dynamic).Authors + 
+                "\nИздатель: " + (selectedItem as dynamic).PublisherName +
+                "\nГод издания: " + (selectedItem as dynamic).PublicationYear +
+                "\nКоличество страниц: " + (selectedItem as dynamic).PageCount + " c." +
+                "\nКлючевые слова: " + (selectedItem as dynamic).Keywords +
+                "\nАннотации: " + (selectedItem as dynamic).Annotation;
+                MessageBox.Show(description, "Описание");
             }
         };
 
